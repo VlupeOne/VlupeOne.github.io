@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0618">
+  <meta name="description" content="Portfólio de Thiago: interfaces fáceis de usar, sistemas Java organizados e acessos protegidos.">
+  <meta name="author" content="Thiago">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Thiago | Desenvolvimento Full Stack">
+  <meta property="og:description" content="Interfaces claras e sistemas que fazem sentido para as pessoas.">
+  <meta property="og:image" content="og-cover.png">
+  <title>Thiago | Desenvolvimento Full Stack</title>
+
+  <style>
+    :root {
+      --ink: #0b0618;
+      --ink-soft: #141025;
+      --paper: #f2efe9;
+      --paper-soft: #e7e2da;
+      --white: #fffdf9;
+      --text: #f8f5f2;
+      --muted: #b8b0c5;
+      --dark-text: #17131e;
+      --dark-muted: #675f6c;
+      --blue: #315bff;
+      --blue-light: #7da2ff;
+      --red: #ff405c;
+      --red-soft: #ff8090;
+      --line-dark: rgba(255, 255, 255, 0.12);
+      --line-light: rgba(23, 19, 30, 0.14);
+      --container: 1180px;
+      --header: 74px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y proximity;
+      scroll-padding-top: var(--header);
+      overflow-x: clip;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--ink);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 15% 18%, rgba(49, 91, 255, 0.14), transparent 28rem),
+        radial-gradient(circle at 90% 75%, rgba(255, 64, 92, 0.11), transparent 30rem),
+        var(--ink);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    .container {
+      width: min(calc(100% - 44px), var(--container));
+      margin-inline: auto;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      padding: 9px 13px;
+      color: white;
+      background: var(--red);
+      border-radius: 8px;
+      transform: translateY(-160%);
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .top-line {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 120;
+      height: 5px;
+      background: linear-gradient(90deg, var(--blue), var(--red));
+    }
+
+    .header {
+      position: fixed;
+      top: 5px;
+      right: 0;
+      left: 0;
+      z-index: 100;
+      height: var(--header);
+      color: var(--text);
+      transition: color 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .header.scrolled {
+      background: rgba(11, 6, 24, 0.84);
+      border-bottom: 1px solid var(--line-dark);
+      backdrop-filter: blur(15px);
+    }
+
+    .nav {
+      display: flex;
+      height: 100%;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 850;
+      letter-spacing: -0.035em;
+    }
+
+    .brand-mark {
+      position: relative;
+      display: grid;
+      width: 39px;
+      height: 39px;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--blue), var(--red));
+      border-radius: 50%;
+      font-family: Consolas, monospace;
+      font-size: 0.7rem;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: inherit;
+    }
+
+    .nav-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      margin: 0 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #c9c2d2;
+      font-size: 0.83rem;
+      font-weight: 700;
+      transition: color 150ms ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: white;
+    }
+
+    .icon-button {
+      display: grid;
+      width: 41px;
+      height: 41px;
+      place-items: center;
+      color: white;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line-dark);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+    }
+
+    .icon-button:hover {
+      background: rgba(49, 91, 255, 0.13);
+      border-color: rgba(125, 162, 255, 0.34);
+      transform: translateY(-2px);
+    }
+
+    .icon-button svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .menu-button {
+      display: none;
+    }
+
+    .scene {
+      position: relative;
+      display: grid;
+      min-height: 100svh;
+      align-items: center;
+      padding: calc(var(--header) + 54px) 0 76px;
+      scroll-snap-align: start;
+    }
+
+    .hero {
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(380px, 0.78fr);
+      gap: 64px;
+      align-items: center;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 22px;
+      color: var(--red-soft);
+      font-family: Consolas, monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .kicker::before {
+      content: "";
+      width: 28px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--red));
+      border-radius: 99px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1,
+    h2,
+    h3 {
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: clamp(4.1rem, 9.6vw, 8.8rem);
+      text-transform: uppercase;
+    }
+
+    h1 .outline {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.78);
+    }
+
+    h1 .filled {
+      display: block;
+      color: transparent;
+      background: linear-gradient(105deg, var(--blue-light), var(--red-soft));
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    h2 {
+      font-size: clamp(3rem, 7vw, 6rem);
+    }
+
+    h3 {
+      font-size: clamp(2rem, 4vw, 3.7rem);
+    }
+
+    .hero-copy {
+      max-width: 640px;
+      margin-bottom: 32px;
+      color: #c8c1d1;
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 50px;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 0 21px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      color: white;
+      background: linear-gradient(110deg, var(--blue), var(--red));
+      box-shadow: 0 15px 35px rgba(49, 91, 255, 0.2);
+    }
+
+    .button-ghost {
+      color: white;
+      background: rgba(255, 255, 255, 0.035);
+      border-color: var(--line-dark);
+    }
+
+    .button svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .workspace-art {
+      position: relative;
+      filter: drop-shadow(0 35px 45px rgba(0, 0, 0, 0.42));
+      transform: translateZ(0);
+    }
+
+    .workspace-art::before {
+      content: "";
+      position: absolute;
+      inset: 20% 5% 0;
+      z-index: -1;
+      background: radial-gradient(circle, rgba(49, 91, 255, 0.24), rgba(255, 64, 92, 0.08) 48%, transparent 70%);
+      filter: blur(25px);
+    }
+
+    .hero-hint {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #8f879c;
+      font-family: Consolas, monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transform: translateX(-50%);
+    }
+
+    .key {
+      display: grid;
+      width: 25px;
+      height: 25px;
+      place-items: center;
+      color: #d5cedd;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid var(--line-dark);
+      border-radius: 6px;
+    }
+
+    .projects-scene {
+      color: var(--dark-text);
+      background: var(--paper);
+    }
+
+    .projects-scene::before {
+      content: "";
+      position: absolute;
+      top: -42px;
+      right: -2%;
+      left: -2%;
+      height: 84px;
+      background: var(--paper);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    }
+
+    .projects-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 40px;
+      margin-bottom: 34px;
+    }
+
+    .projects-head .kicker {
+      color: #b82542;
+    }
+
+    .projects-head p:last-child {
+      max-width: 430px;
+      margin-bottom: 7px;
+      color: var(--dark-muted);
+    }
+
+    .carousel {
+      overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--line-light);
+      border-radius: 28px;
+      box-shadow: 0 28px 70px rgba(35, 25, 45, 0.12);
+    }
+
+    .carousel-track {
+      display: flex;
+      width: 100%;
+      min-width: 0;
+      touch-action: pan-y;
+      transition: transform 480ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .project-slide {
+      display: grid;
+      flex: 0 0 100%;
+      width: 100%;
+      min-width: 0;
+      grid-template-columns: minmax(0, 0.82fr) minmax(380px, 1.18fr);
+    }
+
+    .project-copy {
+      display: flex;
+      min-width: 0;
+      min-height: 510px;
+      flex-direction: column;
+      padding: clamp(32px, 5vw, 58px);
+    }
+
+    .project-number {
+      margin-bottom: 45px;
+      color: #a62a42;
+      font-family: Consolas, monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .project-copy h3 {
+      max-width: 540px;
+      margin-bottom: 18px;
+    }
+
+    .project-copy > p {
+      max-width: 530px;
+      color: var(--dark-muted);
+    }
+
+    .project-points {
+      display: grid;
+      gap: 9px;
+      margin: 22px 0 28px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .project-points li {
+      display: flex;
+      gap: 10px;
+      color: #3f3846;
+      font-size: 0.86rem;
+    }
+
+    .project-points li::before {
+      content: "";
+      flex: 0 0 auto;
+      width: 7px;
+      height: 7px;
+      margin-top: 9px;
+      background: linear-gradient(135deg, var(--blue), var(--red));
+      border-radius: 50%;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: auto;
+    }
+
+    .tag {
+      padding: 5px 9px;
+      color: #443b50;
+      background: #eee9e3;
+      border: 1px solid rgba(23, 19, 30, 0.1);
+      border-radius: 999px;
+      font-family: Consolas, monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+
+    .repo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 18px;
+      color: #17131e;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .repo-link:hover {
+      color: var(--blue);
+    }
+
+    .project-visual {
+      display: grid;
+      min-width: 0;
+      min-height: 510px;
+      place-items: center;
+      padding: 42px;
+      overflow: hidden;
+      background:
+        linear-gradient(145deg, rgba(49, 91, 255, 0.1), rgba(255, 64, 92, 0.08)),
+        #171125;
+      border-left: 1px solid var(--line-light);
+    }
+
+    .project-window {
+      width: min(100%, 540px);
+      overflow: hidden;
+      background: #0e0d18;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 17px;
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
+      transform: perspective(900px) rotateY(-5deg) rotateX(2deg);
+      transition: transform 240ms ease;
+    }
+
+    .project-slide:hover .project-window {
+      transform: perspective(900px) rotateY(0) rotateX(0);
+    }
+
+    .window-head {
+      display: flex;
+      height: 46px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+      color: white;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .window-head strong {
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+    }
+
+    .window-orb {
+      width: 23px;
+      height: 23px;
+      background: linear-gradient(135deg, var(--blue), var(--red));
+      border-radius: 50%;
+    }
+
+    .ticket-ui {
+      display: grid;
+      grid-template-columns: 94px 1fr;
+      min-height: 320px;
+    }
+
+    .ticket-nav {
+      display: grid;
+      align-content: start;
+      gap: 9px;
+      padding: 18px 12px;
+      background: #090812;
+      border-right: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    .ticket-nav i {
+      height: 24px;
+      background: rgba(255, 255, 255, 0.045);
+      border-radius: 6px;
+    }
+
+    .ticket-nav i:first-child {
+      background: rgba(49, 91, 255, 0.23);
+    }
+
+    .ticket-main {
+      padding: 22px;
+    }
+
+    .skeleton-title {
+      width: 42%;
+      height: 9px;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.13);
+      border-radius: 99px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-bottom: 14px;
+    }
+
+    .stat {
+      min-height: 72px;
+      padding: 12px;
+      color: white;
+      background: #161424;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 9px;
+    }
+
+    .stat b,
+    .stat span {
+      display: block;
+    }
+
+    .stat b {
+      margin-bottom: 5px;
+      font-family: Consolas, monospace;
+      font-size: 0.73rem;
+    }
+
+    .stat span {
+      color: #7f788c;
+      font-size: 0.54rem;
+    }
+
+    .skeleton-table {
+      display: grid;
+      gap: 13px;
+      padding: 15px;
+      background: #12101e;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 9px;
+    }
+
+    .skeleton-row {
+      display: grid;
+      grid-template-columns: 1.5fr 0.8fr 0.7fr;
+      gap: 12px;
+    }
+
+    .skeleton-row i {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+    }
+
+    .skeleton-row i:nth-child(2) {
+      background: rgba(255, 64, 92, 0.25);
+    }
+
+    .price-ui {
+      padding: 28px;
+    }
+
+    .search-bar {
+      display: flex;
+      height: 42px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 13px;
+      color: #858092;
+      background: #090812;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 9px;
+      font-size: 0.65rem;
+    }
+
+    .product-line {
+      display: grid;
+      grid-template-columns: 60px 1fr auto;
+      gap: 14px;
+      align-items: center;
+      margin-top: 18px;
+      padding: 16px;
+      background: #171424;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 11px;
+    }
+
+    .product-picture {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(145deg, rgba(49, 91, 255, 0.42), rgba(255, 64, 92, 0.3));
+      border-radius: 10px;
+    }
+
+    .product-name i {
+      display: block;
+      height: 7px;
+      margin-bottom: 8px;
+      background: rgba(255, 255, 255, 0.13);
+      border-radius: 99px;
+    }
+
+    .product-name i:last-child {
+      width: 58%;
+      margin-bottom: 0;
+    }
+
+    .product-price {
+      color: var(--red-soft);
+      font-family: Consolas, monospace;
+      font-size: 0.86rem;
+    }
+
+    .checks {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .checks span {
+      padding: 10px;
+      color: #aaa3b4;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      font-size: 0.62rem;
+      text-align: center;
+    }
+
+    .checks span::before {
+      content: "✓";
+      margin-right: 6px;
+      color: var(--blue-light);
+    }
+
+    .future-board {
+      display: grid;
+      width: min(100%, 440px);
+      aspect-ratio: 1.35;
+      place-items: center;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 30px 30px;
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+    }
+
+    .future-board span {
+      display: grid;
+      width: 65px;
+      height: 65px;
+      place-items: center;
+      color: #a29aaa;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      font-size: 2rem;
+      font-weight: 300;
+    }
+
+    .carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 17px;
+    }
+
+    .carousel-dots,
+    .carousel-arrows {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      padding: 0;
+      background: #a7a0a9;
+      border: 0;
+      border-radius: 99px;
+      cursor: pointer;
+      transition: width 180ms ease, background 180ms ease;
+    }
+
+    .carousel-dot.active {
+      width: 29px;
+      background: linear-gradient(90deg, var(--blue), var(--red));
+    }
+
+    .carousel-arrow {
+      display: grid;
+      width: 43px;
+      height: 43px;
+      place-items: center;
+      color: var(--dark-text);
+      background: transparent;
+      border: 1px solid var(--line-light);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: color 150ms ease, background 150ms ease;
+    }
+
+    .carousel-arrow:hover {
+      color: white;
+      background: var(--dark-text);
+    }
+
+    .carousel-arrow svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.84fr) minmax(480px, 1.16fr);
+      gap: 74px;
+      align-items: center;
+    }
+
+    .contact-copy h2 {
+      max-width: 700px;
+      margin-bottom: 24px;
+    }
+
+    .contact-copy > p {
+      max-width: 590px;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .contact-copy strong {
+      color: white;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      min-height: 43px;
+      align-items: center;
+      gap: 9px;
+      padding: 0 14px;
+      color: #eee9f3;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--line-dark);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      transition: transform 150ms ease, border-color 150ms ease, background 150ms ease;
+    }
+
+    .contact-link:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .contact-link[aria-disabled="true"] {
+      color: #777080;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .contact-link[aria-disabled="true"]:hover {
+      background: rgba(255, 255, 255, 0.035);
+      border-color: var(--line-dark);
+      transform: none;
+    }
+
+    .contact-link svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .contact-note {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      margin-top: 17px;
+      color: #87808e !important;
+      font-family: Consolas, monospace;
+      font-size: 0.7rem !important;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      flex: 0 0 auto;
+      background: #56d89f;
+      border-radius: 50%;
+      box-shadow: 0 0 0 5px rgba(86, 216, 159, 0.08);
+    }
+
+    .quote-card {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--line-dark);
+      border-radius: 22px;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.22);
+    }
+
+    .quote-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 20px 23px;
+      background: rgba(255, 255, 255, 0.025);
+      border-bottom: 1px solid var(--line-dark);
+    }
+
+    .quote-head strong {
+      font-size: 1rem;
+    }
+
+    .quote-head span {
+      color: #8e8698;
+      font-family: Consolas, monospace;
+      font-size: 0.67rem;
+    }
+
+    .quote-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding: 23px;
+    }
+
+    .form-field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .form-field-wide,
+    .quote-actions {
+      grid-column: 1 / -1;
+    }
+
+    .form-field label {
+      color: #bbb3c5;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      width: 100%;
+      min-height: 47px;
+      padding: 11px 13px;
+      color: white;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .form-field select {
+      color-scheme: dark;
+    }
+
+    .form-field textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: #7e7788;
+    }
+
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      border-color: var(--blue-light);
+      box-shadow: 0 0 0 3px rgba(49, 91, 255, 0.12);
+    }
+
+    .quote-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    .quote-actions .button {
+      flex: 0 0 auto;
+      border: 0;
+    }
+
+    .form-status {
+      margin: 0;
+      color: #9d95a8;
+      font-size: 0.7rem;
+    }
+
+    .footer {
+      position: absolute;
+      right: 0;
+      bottom: 21px;
+      left: 0;
+      color: #766e80;
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    dialog {
+      width: min(calc(100% - 32px), 520px);
+      padding: 0;
+      color: var(--text);
+      background: #171125;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.52);
+    }
+
+    dialog::backdrop {
+      background: rgba(3, 2, 8, 0.78);
+      backdrop-filter: blur(7px);
+    }
+
+    .help-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line-dark);
+    }
+
+    .help-head strong {
+      font-size: 0.9rem;
+    }
+
+    .dialog-close {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      color: white;
+      background: transparent;
+      border: 1px solid var(--line-dark);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .help-body {
+      display: grid;
+      gap: 13px;
+      padding: 22px;
+    }
+
+    .help-row {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .help-keys {
+      display: flex;
+      gap: 5px;
+    }
+
+    .help-key {
+      display: grid;
+      min-width: 29px;
+      height: 29px;
+      padding: 0 7px;
+      place-items: center;
+      color: white;
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid var(--line-dark);
+      border-radius: 6px;
+      font-family: Consolas, monospace;
+      font-size: 0.68rem;
+    }
+
+    .help-row p {
+      margin: 0;
+      color: #aaa2b3;
+      font-size: 0.78rem;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--red-soft);
+      outline-offset: 4px;
+    }
+
+    @media (max-width: 940px) {
+      html {
+        scroll-snap-type: none;
+      }
+
+      .scene {
+        min-height: auto;
+        padding-block: calc(var(--header) + 70px) 90px;
+      }
+
+      .hero-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .workspace-art {
+        width: min(100%, 620px);
+        margin-inline: auto;
+      }
+
+      .hero-hint {
+        display: none;
+      }
+
+      .project-slide {
+        grid-template-columns: 1fr;
+      }
+
+      .project-copy {
+        min-height: auto;
+      }
+
+      .project-visual {
+        min-height: 420px;
+        border-top: 1px solid var(--line-light);
+        border-left: 0;
+      }
+    }
+
+    @media (max-width: 700px) {
+      :root {
+        --header: 68px;
+      }
+
+      .container {
+        width: min(calc(100% - 28px), var(--container));
+      }
+
+      .menu-button {
+        display: grid;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 80px;
+        right: 14px;
+        left: 14px;
+        display: grid;
+        gap: 2px;
+        margin: 0;
+        padding: 12px;
+        background: rgba(18, 12, 31, 0.98);
+        border: 1px solid var(--line-dark);
+        border-radius: 15px;
+        box-shadow: 0 22px 65px rgba(0, 0, 0, 0.45);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-7px);
+        transition: opacity 150ms ease, transform 150ms ease;
+      }
+
+      .nav-links.open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: none;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 10px;
+      }
+
+      .scene {
+        padding-block: calc(var(--header) + 48px) 74px;
+      }
+
+      h1 {
+        font-size: clamp(3.7rem, 19vw, 5.4rem);
+      }
+
+      h2 {
+        font-size: clamp(2.8rem, 14vw, 4.2rem);
+      }
+
+      .hero-grid {
+        gap: 54px;
+      }
+
+      .hero-actions {
+        display: grid;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .projects-head {
+        display: block;
+      }
+
+      .project-copy {
+        padding: 29px 23px;
+      }
+
+      .project-number {
+        margin-bottom: 30px;
+      }
+
+      .project-visual {
+        min-height: 330px;
+        padding: 22px 14px;
+      }
+
+      .ticket-ui {
+        grid-template-columns: 70px 1fr;
+        min-height: 270px;
+      }
+
+      .ticket-main {
+        padding: 16px 12px;
+      }
+
+      .stat-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat:nth-child(n + 2) {
+        display: none;
+      }
+
+      .price-ui {
+        padding: 20px;
+      }
+
+      .product-line {
+        grid-template-columns: 48px 1fr;
+      }
+
+      .product-picture {
+        width: 48px;
+        height: 48px;
+      }
+
+      .product-price {
+        grid-column: 2;
+      }
+
+      .carousel-controls {
+        justify-content: center;
+      }
+
+      .carousel-dots {
+        order: -1;
+      }
+
+      .contact-grid {
+        gap: 38px;
+      }
+
+      .quote-body {
+        grid-template-columns: 1fr;
+      }
+
+      .form-field-wide,
+      .quote-actions {
+        grid-column: auto;
+      }
+
+      .quote-actions {
+        display: grid;
+      }
+
+      .quote-actions .button {
+        width: 100%;
+      }
+
+      .footer {
+        position: static;
+        margin-top: 60px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-line" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+  <header class="header" id="header">
+    <nav class="nav container" aria-label="Navegação principal">
+      <a class="brand" href="#inicio" aria-label="Thiago, início">
+        <span class="brand-mark" aria-hidden="true">TH</span>
+        <span>Thiago.dev</span>
+      </a>
+
+      <div class="nav-group">
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#projetos">Projetos</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+
+        <button class="icon-button" id="help-button" type="button" aria-label="Como navegar">?</button>
+        <button class="icon-button menu-button" id="menu-button" type="button" aria-label="Abrir menu" aria-controls="nav-links" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16"/>
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="scene hero" id="inicio" aria-labelledby="hero-title">
+      <div class="hero-grid container">
+        <div>
+          <p class="kicker">Desenvolvimento full stack</p>
+          <h1 id="hero-title">
+            <span class="outline">Thiago</span>
+            <span class="filled">cria para pessoas.</span>
+          </h1>
+          <p class="hero-copy">
+            Transformo ideias em experiências fáceis de usar, com uma estrutura organizada por trás e cuidado com cada acesso.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#projetos">
+              Explorar projetos
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+              </svg>
+            </a>
+            <a class="button button-ghost" href="#contato">Pedir orçamento</a>
+          </div>
+        </div>
+
+        <div class="workspace-art" aria-label="Ilustração de uma estação de desenvolvimento">
+          <svg viewBox="0 0 620 520" role="img" aria-labelledby="workspace-title">
+            <title id="workspace-title">Notebook com código, café e celular</title>
+            <defs>
+              <linearGradient id="laptopBody" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#7183ad"/>
+                <stop offset="1" stop-color="#29314e"/>
+              </linearGradient>
+              <linearGradient id="screenGlow" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#111b3c"/>
+                <stop offset=".55" stop-color="#17102e"/>
+                <stop offset="1" stop-color="#2c0f27"/>
+              </linearGradient>
+              <linearGradient id="accentGlow" x1="0" y1="0" x2="1">
+                <stop stop-color="#315bff"/>
+                <stop offset="1" stop-color="#ff405c"/>
+              </linearGradient>
+              <filter id="softShadow">
+                <feGaussianBlur stdDeviation="14"/>
+              </filter>
+            </defs>
+            <ellipse cx="340" cy="447" rx="245" ry="38" fill="#315bff" opacity=".16" filter="url(#softShadow)"/>
+            <g transform="translate(72 34)">
+              <path d="M138 36h314c18 0 31 14 31 31v252H107V67c0-17 14-31 31-31Z" fill="url(#laptopBody)"/>
+              <path d="M127 56h336v242H127Z" fill="url(#screenGlow)"/>
+              <circle cx="295" cy="46" r="3" fill="#aeb7d2"/>
+              <path d="M87 318h416l54 66c7 9 1 22-11 22H44c-12 0-18-14-10-23l53-65Z" fill="url(#laptopBody)"/>
+              <path d="M69 370h452" stroke="#8592b4" stroke-width="3" opacity=".65"/>
+              <path d="M238 331h114l16 48H221l17-48Z" fill="#3c4669"/>
+              <g opacity=".92">
+                <rect x="150" y="82" width="86" height="11" rx="5" fill="#315bff"/>
+                <rect x="247" y="82" width="55" height="11" rx="5" fill="#ff405c"/>
+                <rect x="314" y="82" width="101" height="11" rx="5" fill="#38d7ce"/>
+                <rect x="150" y="112" width="53" height="8" rx="4" fill="#8ba4ff"/>
+                <rect x="217" y="112" width="148" height="8" rx="4" fill="#4b5375"/>
+                <rect x="180" y="136" width="106" height="8" rx="4" fill="#ff7185"/>
+                <rect x="299" y="136" width="112" height="8" rx="4" fill="#4b5375"/>
+                <rect x="180" y="160" width="58" height="8" rx="4" fill="#38d7ce"/>
+                <rect x="251" y="160" width="139" height="8" rx="4" fill="#4b5375"/>
+                <rect x="150" y="184" width="91" height="8" rx="4" fill="#7f96e9"/>
+                <rect x="254" y="184" width="66" height="8" rx="4" fill="#ff7185"/>
+                <rect x="180" y="208" width="164" height="8" rx="4" fill="#4b5375"/>
+                <rect x="180" y="232" width="75" height="8" rx="4" fill="#38d7ce"/>
+                <rect x="269" y="232" width="123" height="8" rx="4" fill="#4b5375"/>
+                <rect x="150" y="256" width="132" height="8" rx="4" fill="#7f96e9"/>
+              </g>
+              <path d="M127 56h336" stroke="url(#accentGlow)" stroke-width="3"/>
+            </g>
+            <g transform="translate(18 235)">
+              <ellipse cx="77" cy="121" rx="65" ry="17" fill="#000" opacity=".22"/>
+              <path d="M29 29h94l-9 87H39L29 29Z" fill="#222942"/>
+              <ellipse cx="76" cy="29" rx="47" ry="14" fill="#526185"/>
+              <ellipse cx="76" cy="28" rx="37" ry="9" fill="#f0d5b1"/>
+              <path d="M122 48h17c25 0 24 46-3 46h-18" fill="none" stroke="#526185" stroke-width="12"/>
+            </g>
+            <g transform="translate(500 334) rotate(-12)">
+              <rect width="70" height="130" rx="15" fill="#313a5c"/>
+              <rect x="7" y="12" width="56" height="101" rx="8" fill="#100d1d"/>
+              <rect x="17" y="30" width="36" height="7" rx="3" fill="#315bff"/>
+              <rect x="17" y="47" width="28" height="6" rx="3" fill="#ff405c"/>
+              <rect x="17" y="64" width="36" height="6" rx="3" fill="#38d7ce"/>
+              <circle cx="35" cy="121" r="4" fill="#7785a8"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="hero-hint" aria-hidden="true">
+        <span class="key">↓</span>
+        Role ou use as setas
+      </div>
+    </section>
+
+    <section class="scene projects-scene" id="projetos" aria-labelledby="projects-title">
+      <div class="container">
+        <header class="projects-head">
+          <div>
+            <p class="kicker">Trabalhos selecionados</p>
+            <h2 id="projects-title">Projetos com propósito.</h2>
+          </div>
+          <p>Histórias curtas sobre problemas reais, apresentadas uma de cada vez.</p>
+        </header>
+
+        <div class="carousel" id="carousel" aria-label="Projetos de Thiago" aria-roledescription="carrossel" tabindex="0">
+          <div class="carousel-track" id="carousel-track">
+            <article class="project-slide" aria-label="1 de 3: Ticketeria" aria-roledescription="slide">
+              <div class="project-copy">
+                <p class="project-number">01 / Ticketeria</p>
+                <h3>Ingressos organizados do começo ao fim.</h3>
+                <p>Uma plataforma para criar eventos, vender ingressos e validar entradas. Cada pessoa encontra apenas as ferramentas de que precisa.</p>
+                <ul class="project-points">
+                  <li>Organiza eventos, vendas e quantidade de ingressos</li>
+                  <li>Separa os acessos de cada tipo de usuário</li>
+                  <li>Mantém as regras do sistema documentadas</li>
+                </ul>
+                <div class="tags">
+                  <span class="tag">Java 21</span>
+                  <span class="tag">Spring Boot</span>
+                  <span class="tag">PostgreSQL</span>
+                  <span class="tag">JWT</span>
+                </div>
+              </div>
+
+              <div class="project-visual" aria-label="Painel ilustrado da Ticketeria">
+                <div class="project-window">
+                  <div class="window-head"><strong>TICKETERIA</strong><span class="window-orb"></span></div>
+                  <div class="ticket-ui">
+                    <aside class="ticket-nav" aria-hidden="true"><i></i><i></i><i></i><i></i></aside>
+                    <div class="ticket-main" aria-hidden="true">
+                      <div class="skeleton-title"></div>
+                      <div class="stat-grid">
+                        <div class="stat"><b>Evento</b><span>visão geral</span></div>
+                        <div class="stat"><b>Vendas</b><span>ingressos</span></div>
+                        <div class="stat"><b>Acesso</b><span>validação</span></div>
+                      </div>
+                      <div class="skeleton-table">
+                        <div class="skeleton-row"><i></i><i></i><i></i></div>
+                        <div class="skeleton-row"><i></i><i></i><i></i></div>
+                        <div class="skeleton-row"><i></i><i></i><i></i></div>
+                        <div class="skeleton-row"><i></i><i></i><i></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="project-slide" aria-label="2 de 3: Preço Confirmado" aria-roledescription="slide">
+              <div class="project-copy">
+                <p class="project-number">02 / Preço Confirmado</p>
+                <h3>Um alerta que confere antes de avisar.</h3>
+                <p>O sistema acompanha produtos e verifica o valor duas vezes. Isso ajuda a reduzir avisos sobre ofertas erradas ou desatualizadas.</p>
+                <ul class="project-points">
+                  <li>Guarda os produtos que a pessoa quer acompanhar</li>
+                  <li>Consulta preços em fontes diferentes</li>
+                  <li>Prepara o alerta somente depois da confirmação</li>
+                </ul>
+                <div class="tags">
+                  <span class="tag">Java</span>
+                  <span class="tag">Spring Boot</span>
+                  <span class="tag">PostgreSQL</span>
+                  <span class="tag">Docker</span>
+                  <span class="tag">Testcontainers</span>
+                </div>
+                <a class="repo-link" href="https://github.com/VlupeOne/preco-confirmado-mvp" target="_blank" rel="noreferrer">
+                  Ver repositório →
+                </a>
+              </div>
+
+              <div class="project-visual" aria-label="Tela ilustrada do Preço Confirmado">
+                <div class="project-window">
+                  <div class="window-head"><strong>PREÇO CONFIRMADO</strong><span class="window-orb"></span></div>
+                  <div class="price-ui">
+                    <div class="search-bar"><span>Produto monitorado</span><span>⌕</span></div>
+                    <div class="product-line">
+                      <span class="product-picture"></span>
+                      <span class="product-name"><i></i><i></i></span>
+                      <strong class="product-price">R$ --,--</strong>
+                    </div>
+                    <div class="checks"><span>1ª verificação</span><span>2ª verificação</span></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="project-slide" aria-label="3 de 3: Próximos projetos" aria-roledescription="slide">
+              <div class="project-copy">
+                <p class="project-number">03 / Em aberto</p>
+                <h3>Espaço para a próxima boa história.</h3>
+                <p>Novos trabalhos entrarão aqui quando estiverem prontos para mostrar um problema real e uma solução completa.</p>
+              </div>
+
+              <div class="project-visual" aria-label="Espaço reservado para projetos futuros">
+                <div class="future-board"><span>+</span></div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="carousel-controls">
+          <div class="carousel-dots" aria-label="Escolher projeto">
+            <button class="carousel-dot active" type="button" aria-label="Mostrar Ticketeria" aria-current="true"></button>
+            <button class="carousel-dot" type="button" aria-label="Mostrar Preço Confirmado"></button>
+            <button class="carousel-dot" type="button" aria-label="Mostrar próximos projetos"></button>
+          </div>
+          <div class="carousel-arrows">
+            <button class="carousel-arrow" id="previous-slide" type="button" aria-label="Projeto anterior">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <button class="carousel-arrow" id="next-slide" type="button" aria-label="Próximo projeto">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="contato" aria-labelledby="contact-title">
+      <div class="contact-grid container">
+        <div class="contact-copy">
+          <p class="kicker">Vamos conversar</p>
+          <h2 id="contact-title">Sua ideia pode começar aqui.</h2>
+          <p>Conte o que você precisa sem termos complicados. Eu organizo a ideia e penso em uma solução com <strong>tela simples, estrutura segura e espaço para crescer</strong>.</p>
+
+          <div class="contact-links" aria-label="Canais de contato">
+            <a class="contact-link" data-contact="github" href="https://github.com/VlupeOne" target="_blank" rel="noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 22v-4c.1-1-.4-2-1-2.5 3.3-.4 6.8-1.6 6.8-7.4A5.8 5.8 0 0 0 19.2 4 5.4 5.4 0 0 0 19 0s-1.2-.4-4 1.6a13.8 13.8 0 0 0-7 0C5.2-.4 4 0 4 0a5.4 5.4 0 0 0-.2 4A5.8 5.8 0 0 0 2.2 8c0 5.8 3.5 7 6.8 7.4-.5.4-.9 1.1-1 2V22"/><path d="M8 19c-3 .9-3-1.5-4-2"/></svg>
+              GitHub
+            </a>
+            <a class="contact-link" data-contact="email" href="#" aria-disabled="true" title="E-mail ainda não configurado">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              E-mail
+            </a>
+            <a class="contact-link" data-contact="whatsapp" href="#" aria-disabled="true" title="WhatsApp ainda não configurado">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.6a8.5 8.5 0 1 1 16.3-3.9Z"/><path d="M8.6 7.8c.2-.4.5-.4.8-.4h.5c.2 0 .4.1.5.4l.8 2c.1.3 0 .5-.2.7l-.7.8c-.2.2-.1.5 0 .7.8 1.4 2 2.5 3.5 3.1.3.1.5.1.7-.1l.9-1.1c.2-.2.5-.3.7-.2l1.9.9c.3.1.4.4.4.6 0 .4-.2 1.6-1.1 2.1-.8.5-1.8.7-3 .3-1.8-.5-4-1.6-5.8-3.6-1.5-1.7-2.5-3.7-2.8-5.2-.2-.8.1-1.4.4-1.8l.5-.2Z"/></svg>
+              WhatsApp
+            </a>
+            <a class="contact-link" data-contact="linkedin" href="#" aria-disabled="true" title="LinkedIn ainda não configurado">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10v7M8 7v.01M12 17v-7M12 13a3 3 0 0 1 6 0v4"/></svg>
+              LinkedIn
+            </a>
+            <a class="contact-link" data-contact="instagram" href="#" aria-disabled="true" title="Instagram ainda não configurado">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".7" fill="currentColor" stroke="none"/></svg>
+              Instagram
+            </a>
+          </div>
+          <p class="contact-note"><span class="status-dot" aria-hidden="true"></span>Disponível para projetos e oportunidades.</p>
+        </div>
+
+        <form class="quote-card" id="quote-form">
+          <header class="quote-head">
+            <strong>Solicitar orçamento</strong>
+            <span>leva menos de 1 minuto</span>
+          </header>
+          <div class="quote-body">
+            <div class="form-field">
+              <label for="quote-name">Seu nome</label>
+              <input id="quote-name" name="name" type="text" autocomplete="name" placeholder="Como posso te chamar?" required>
+            </div>
+            <div class="form-field">
+              <label for="quote-contact">Seu contato</label>
+              <input id="quote-contact" name="contact" type="text" autocomplete="email" placeholder="E-mail ou WhatsApp" required>
+            </div>
+            <div class="form-field">
+              <label for="quote-project">O que você precisa?</label>
+              <select id="quote-project" name="project" required>
+                <option value="">Escolha uma opção</option>
+                <option>Site ou landing page</option>
+                <option>Sistema completo</option>
+                <option>API ou integração</option>
+                <option>Melhoria em projeto existente</option>
+                <option>Ainda não sei</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="quote-budget">Investimento pensado</label>
+              <select id="quote-budget" name="budget">
+                <option>Ainda não defini</option>
+                <option>Até R$ 1.000</option>
+                <option>R$ 1.000 a R$ 3.000</option>
+                <option>R$ 3.000 a R$ 6.000</option>
+                <option>Acima de R$ 6.000</option>
+              </select>
+            </div>
+            <div class="form-field form-field-wide">
+              <label for="quote-message">Conte a ideia</label>
+              <textarea id="quote-message" name="message" placeholder="O que você quer criar ou melhorar?" required></textarea>
+            </div>
+            <div class="quote-actions">
+              <button class="button button-primary" type="submit">Preparar pedido →</button>
+              <p class="form-status" id="form-status" role="status">Seus dados ficam apenas no seu navegador.</p>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <footer class="footer">&copy; <span id="year"></span> Thiago.</footer>
+    </section>
+  </main>
+
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <header class="help-head">
+      <strong id="help-title">Como explorar</strong>
+      <button class="dialog-close" id="dialog-close" type="button" aria-label="Fechar">×</button>
+    </header>
+    <div class="help-body">
+      <div class="help-row">
+        <div class="help-keys"><span class="help-key">↑</span><span class="help-key">↓</span></div>
+        <p>Navegue entre as três cenas.</p>
+      </div>
+      <div class="help-row">
+        <div class="help-keys"><span class="help-key">←</span><span class="help-key">→</span></div>
+        <p>Troque de projeto quando estiver na galeria.</p>
+      </div>
+      <div class="help-row">
+        <div class="help-keys"><span class="help-key">Esc</span></div>
+        <p>Feche esta janela.</p>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const header = document.getElementById("header");
+      const menuButton = document.getElementById("menu-button");
+      const navLinks = document.getElementById("nav-links");
+      const navAnchors = [...navLinks.querySelectorAll("a")];
+      const scenes = [...document.querySelectorAll(".scene")];
+      const helpButton = document.getElementById("help-button");
+      const helpDialog = document.getElementById("help-dialog");
+      const dialogClose = document.getElementById("dialog-close");
+      const carousel = document.getElementById("carousel");
+      const track = document.getElementById("carousel-track");
+      const slides = [...track.children];
+      const dots = [...document.querySelectorAll(".carousel-dot")];
+      const previousSlide = document.getElementById("previous-slide");
+      const nextSlide = document.getElementById("next-slide");
+      const quoteForm = document.getElementById("quote-form");
+      const formStatus = document.getElementById("form-status");
+      const contactLinks = [...document.querySelectorAll("[data-contact]")];
+      const contactConfig = Object.freeze({
+        email: "thiagopyrus26@gmail.com",
+        whatsapp: "5511959647861",
+        linkedin: "https://www.linkedin.com/in/thiago-f-7b8455124/",
+        instagram: "https://www.instagram.com/vlupeone",
+        github: "https://github.com/VlupeOne"
+      });
+      let slideIndex = 0;
+      let pointerStart = null;
+
+      const contactUrl = (channel, value) => {
+        if (channel === "email") return `mailto:${value}`;
+        if (channel === "whatsapp") return `https://wa.me/${value.replace(/\D/g, "")}`;
+        return value;
+      };
+
+      contactLinks.forEach((link) => {
+        const channel = link.dataset.contact;
+        const value = contactConfig[channel];
+
+        if (value) {
+          link.href = contactUrl(channel, value);
+          link.removeAttribute("aria-disabled");
+          link.removeAttribute("title");
+          if (channel !== "email") {
+            link.target = "_blank";
+            link.rel = "noreferrer";
+          }
+          return;
+        }
+
+        link.addEventListener("click", (event) => event.preventDefault());
+      });
+
+      const closeMenu = () => {
+        navLinks.classList.remove("open");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.setAttribute("aria-label", "Abrir menu");
+      };
+
+      menuButton.addEventListener("click", () => {
+        const open = navLinks.classList.toggle("open");
+        menuButton.setAttribute("aria-expanded", String(open));
+        menuButton.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+      });
+
+      navAnchors.forEach((anchor) => anchor.addEventListener("click", closeMenu));
+
+      const activeSceneIndex = () => {
+        const marker = window.scrollY + window.innerHeight * 0.45;
+        let current = 0;
+
+        scenes.forEach((scene, index) => {
+          if (marker >= scene.offsetTop) current = index;
+        });
+
+        return current;
+      };
+
+      const updateNavigation = () => {
+        header.classList.toggle("scrolled", window.scrollY > 14);
+        const currentId = scenes[activeSceneIndex()].id;
+
+        navAnchors.forEach((anchor) => {
+          anchor.classList.toggle("active", anchor.getAttribute("href") === `#${currentId}`);
+        });
+      };
+
+      const goToScene = (direction) => {
+        const next = Math.max(0, Math.min(scenes.length - 1, activeSceneIndex() + direction));
+        const target = scenes[next];
+        history.replaceState(null, "", `#${target.id}`);
+        target.scrollIntoView({ behavior: "smooth" });
+      };
+
+      const showSlide = (index) => {
+        slideIndex = (index + slides.length) % slides.length;
+        track.style.transform = `translateX(-${slideIndex * 100}%)`;
+
+        slides.forEach((slide, indexValue) => {
+          slide.setAttribute("aria-hidden", String(indexValue !== slideIndex));
+        });
+
+        dots.forEach((dot, indexValue) => {
+          const active = indexValue === slideIndex;
+          dot.classList.toggle("active", active);
+          dot.setAttribute("aria-current", active ? "true" : "false");
+        });
+      };
+
+      previousSlide.addEventListener("click", () => showSlide(slideIndex - 1));
+      nextSlide.addEventListener("click", () => showSlide(slideIndex + 1));
+      dots.forEach((dot, index) => dot.addEventListener("click", () => showSlide(index)));
+
+      carousel.addEventListener("pointerdown", (event) => {
+        pointerStart = event.clientX;
+      });
+
+      carousel.addEventListener("pointerup", (event) => {
+        if (pointerStart === null) return;
+        const distance = event.clientX - pointerStart;
+        if (Math.abs(distance) > 45) showSlide(slideIndex + (distance < 0 ? 1 : -1));
+        pointerStart = null;
+      });
+
+      carousel.addEventListener("pointercancel", () => {
+        pointerStart = null;
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (helpDialog.open) return;
+        if (event.target.matches("input, textarea, select")) return;
+
+        const inProjects = scenes[activeSceneIndex()].id === "projetos";
+        if (inProjects && event.key === "ArrowLeft") {
+          event.preventDefault();
+          showSlide(slideIndex - 1);
+        }
+        if (inProjects && event.key === "ArrowRight") {
+          event.preventDefault();
+          showSlide(slideIndex + 1);
+        }
+        if (event.key === "ArrowDown") {
+          event.preventDefault();
+          goToScene(1);
+        }
+        if (event.key === "ArrowUp") {
+          event.preventDefault();
+          goToScene(-1);
+        }
+      });
+
+      helpButton.addEventListener("click", () => helpDialog.showModal());
+      dialogClose.addEventListener("click", () => helpDialog.close());
+      helpDialog.addEventListener("click", (event) => {
+        if (event.target === helpDialog) helpDialog.close();
+      });
+
+      const copyText = async (text) => {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return;
+        }
+
+        const temporaryField = document.createElement("textarea");
+        temporaryField.value = text;
+        temporaryField.setAttribute("readonly", "");
+        temporaryField.style.position = "fixed";
+        temporaryField.style.opacity = "0";
+        document.body.appendChild(temporaryField);
+        temporaryField.select();
+        document.execCommand("copy");
+        temporaryField.remove();
+      };
+
+      quoteForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const data = new FormData(quoteForm);
+        const message = [
+          "Olá, Thiago! Gostaria de solicitar um orçamento.",
+          "",
+          `Nome: ${data.get("name")}`,
+          `Contato: ${data.get("contact")}`,
+          `Projeto: ${data.get("project")}`,
+          `Investimento: ${data.get("budget")}`,
+          "",
+          `Ideia: ${data.get("message")}`
+        ].join("\n");
+
+        try {
+          await copyText(message);
+
+          if (contactConfig.whatsapp) {
+            window.open(`${contactUrl("whatsapp", contactConfig.whatsapp)}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+            formStatus.textContent = "Pedido copiado e WhatsApp aberto.";
+            return;
+          }
+
+          if (contactConfig.email) {
+            window.location.href = `${contactUrl("email", contactConfig.email)}?subject=${encodeURIComponent("Solicitação de orçamento")}&body=${encodeURIComponent(message)}`;
+            formStatus.textContent = "Pedido copiado e e-mail aberto.";
+            return;
+          }
+
+          formStatus.textContent = "Pedido copiado. Use o GitHub enquanto os contatos diretos são configurados.";
+        } catch {
+          formStatus.textContent = "Não foi possível copiar. Selecione o texto e tente novamente.";
+        }
+      });
+
+      window.addEventListener("scroll", updateNavigation, { passive: true });
+      updateNavigation();
+      showSlide(0);
+      document.getElementById("year").textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
