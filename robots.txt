@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vlupeone.github.io/sitemap.xml
