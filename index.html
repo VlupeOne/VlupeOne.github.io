@@ -188,20 +188,26 @@
     }
 
     .brand-mark {
+      position: relative;
       display: grid;
       width: 44px;
       height: 44px;
       place-items: center;
       color: var(--text);
-      border: 1px solid var(--line-strong);
-      border-radius: 8px;
-      background:
-        linear-gradient(135deg, rgba(61, 124, 255, 0.26), transparent 52%),
-        var(--panel);
+      border: 0;
+      border-radius: 0;
+      background: transparent;
       font-family: var(--mono);
-      font-size: 0.9rem;
+      font-size: 0;
       font-weight: 900;
       letter-spacing: -0.08em;
+    }
+
+    .brand-mark svg {
+      width: 38px;
+      height: 38px;
+      color: var(--text);
+      filter: drop-shadow(0 10px 24px rgba(255, 255, 255, 0.08));
     }
 
     .brand-text {
@@ -409,26 +415,24 @@
     }
 
     .hero {
-      min-height: 100vh;
-      padding: calc(var(--header) + 76px) 0 0;
-      border-bottom: 1px solid rgba(218, 226, 255, 0.1);
+      padding: calc(var(--header) + 38px) 0 0;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 0.82fr) minmax(520px, 1fr);
+      grid-template-columns: minmax(0, 0.76fr) minmax(620px, 1.05fr);
       align-items: center;
-      gap: 58px;
-      min-height: min(720px, calc(100vh - var(--header) - 220px));
+      gap: 48px;
+      min-height: 640px;
     }
 
     .hero-copy h1 {
       margin: 0;
-      max-width: 720px;
-      font-size: clamp(3.2rem, 8vw, 6.6rem);
+      max-width: 650px;
+      font-size: clamp(3.2rem, 4.55vw, 4.05rem);
       font-weight: 860;
-      line-height: 0.95;
-      letter-spacing: -0.075em;
+      line-height: 0.98;
+      letter-spacing: -0.065em;
     }
 
     .hero-copy h1::after {
@@ -485,7 +489,7 @@
         radial-gradient(circle at 50% 40%, rgba(61, 124, 255, 0.08), transparent 32%),
         var(--panel);
       box-shadow: var(--shadow);
-      overflow: hidden;
+      overflow: visible;
     }
 
     .system-window::before {
@@ -765,8 +769,8 @@
 
     .phone-preview {
       position: absolute;
-      right: 18px;
-      bottom: 88px;
+      right: -42px;
+      bottom: 128px;
       z-index: 4;
       width: 168px;
       padding: 14px;
@@ -856,9 +860,22 @@
       overflow: hidden;
     }
 
+    #servicos {
+      padding-top: 34px;
+    }
+
+    #servicos .section-heading {
+      font-size: clamp(2.45rem, 3.75vw, 3.35rem);
+      line-height: 0.98;
+    }
+
+    #servicos .split-head {
+      margin-bottom: 20px;
+    }
+
     .service-item {
       min-height: 210px;
-      padding: 28px 24px 24px;
+      padding: 18px 24px 24px;
       border-right: 1px solid rgba(218, 226, 255, 0.13);
     }
 
@@ -879,8 +896,14 @@
       font-size: 1.35rem;
     }
 
+    .service-icon {
+      width: 42px;
+      height: 42px;
+      font-size: 1.16rem;
+    }
+
     .service-item h3 {
-      margin: 24px 0 8px;
+      margin: 10px 0 8px;
       color: var(--text);
       font-size: 1.03rem;
       line-height: 1.2;
@@ -1746,6 +1769,10 @@
         padding-top: calc(var(--header) + 42px);
       }
 
+      .hero-copy {
+        translate: 0;
+      }
+
       .section {
         padding: 78px 0;
       }
@@ -1977,7 +2004,12 @@
     <div class="container">
       <nav class="nav" aria-label="Navegação principal">
         <a href="#inicio" class="brand" aria-label="Thiago Pimentel — início">
-          <span class="brand-mark" aria-hidden="true">TP</span>
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none">
+              <path d="M7 9h23.5c7.2 0 11.5 4.2 11.5 10.3 0 6.4-4.6 10.6-12 10.6H18.2v9.7H11V22.9h19.1c3.1 0 4.9-1.3 4.9-3.6 0-2.2-1.8-3.5-4.9-3.5H7V9Z" fill="currentColor"/>
+              <path d="M7 22.9h7.2v16.7H7V22.9Z" fill="currentColor"/>
+            </svg>
+          </span>
           <span class="brand-text">
             <span class="brand-name">Thiago Pimentel</span>
             <span class="brand-role">Desenvolvedor Full Stack</span>
@@ -2029,7 +2061,7 @@
       <div class="container">
         <div class="hero-grid">
           <div class="hero-copy reveal">
-            <h1>Sites, sistemas e APIs sem ruído.</h1>
+            <h1>Sites, sistemas<br>e APIs sem ruído.</h1>
             <p>Desenvolvo produtos web claros, seguros e prontos para crescer com Java, Spring Boot, React e Next.js.</p>
 
             <div class="hero-actions" aria-label="Ações principais">
@@ -2142,12 +2174,6 @@ INFO  Security filter chain ready</pre>
           </div>
         </div>
 
-        <div class="next-preview" aria-label="Prévia da seção de serviços">
-          <div class="preview-grid">
-            <h2>Soluções completas, do front ao back.</h2>
-            <p>Atuo em todas as camadas do desenvolvimento para entregar produtos robustos, escaláveis e focados no que realmente importa: resultado claro para quem usa.</p>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -2156,7 +2182,7 @@ INFO  Security filter chain ready</pre>
         <div class="split-head reveal">
           <div>
             <p class="section-label">Serviços</p>
-            <h2 class="section-heading" id="servicos-titulo">Soluções completas, do <span class="blue">front</span> ao <span class="coral">back</span>.</h2>
+            <h2 class="section-heading" id="servicos-titulo">Soluções completas,<br>do <span class="blue">front</span> ao <span class="coral">back</span>.</h2>
           </div>
           <p class="section-lead">Cada projeto começa pelo entendimento do problema, não pela escolha da tecnologia. A entrega precisa funcionar, ser simples de manter e fazer sentido para o contexto.</p>
         </div>
@@ -2512,7 +2538,12 @@ INFO  Security filter chain ready</pre>
         <footer class="site-footer" aria-label="Rodapé">
           <div class="footer-inner">
             <div class="footer-brand">
-              <span class="brand-mark" aria-hidden="true">TP</span>
+              <span class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none">
+                  <path d="M7 9h23.5c7.2 0 11.5 4.2 11.5 10.3 0 6.4-4.6 10.6-12 10.6H18.2v9.7H11V22.9h19.1c3.1 0 4.9-1.3 4.9-3.6 0-2.2-1.8-3.5-4.9-3.5H7V9Z" fill="currentColor"/>
+                  <path d="M7 22.9h7.2v16.7H7V22.9Z" fill="currentColor"/>
+                </svg>
+              </span>
               <span><strong>Thiago Pimentel.</strong><span>Desenvolvido com HTML, CSS e JavaScript.</span></span>
             </div>
             <nav class="footer-links" aria-label="Links do rodapé">
