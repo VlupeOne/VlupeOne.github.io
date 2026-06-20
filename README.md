@@ -23,6 +23,7 @@ manutenção simples e funcionamento direto no GitHub Pages.
 VlupeOne.github.io/
 ├── index.html      Página principal (todo o conteúdo, CSS e JS)
 ├── 404.html        Página de erro personalizada
+├── design/         Conceitos visuais usados no redesign da landing page
 ├── robots.txt      Diretivas para indexadores
 ├── sitemap.xml     Mapa do site para SEO
 ├── og-cover.png    Imagem de compartilhamento (Open Graph)
@@ -48,26 +49,18 @@ a funcionar automaticamente após a configuração.
 
 ---
 
-## Como adicionar um projeto ao carrossel
+## Como adicionar um projeto ao showcase
 
-Dentro de `#carousel-track` em `index.html`, duplique um `<article class="project-slide">` e edite:
+Dentro de `#projetos` em `index.html`, duplique um `<article class="project-card">` e edite:
 
-- `aria-label` — nome do projeto e posição (ex: `"Projeto 3 de 4: Nome do Projeto"`)
-- `.project-number` — número e nome
-- `.project-status` — `done` (concluído) ou `wip` (em desenvolvimento)
+- `.project-status` — texto e classe visual (`wip` para projeto em evolução)
 - `<h3>` — título do projeto
 - `<p>` — descrição do problema/solução
-- `.project-points li` — funcionalidades principais
-- `.tags .tag` — tecnologias
-- `.repo-link href` — link para o repositório
-- `.project-visual` — mockup ou visual ilustrativo
+- `.project-visual` — mockup ou visual ilustrativo em HTML/CSS
+- `.tag-row .tag` — tecnologias
+- `.project-link href` — link para o repositório
 
-Também atualize os pontos do carrossel em `.carousel-dots`:
-
-```html
-<button class="carousel-dot" role="tab" aria-selected="false"
-  aria-controls="slide-N" aria-label="Projeto N: Nome" data-index="N"></button>
-```
+Se adicionar mais cards, ajuste o `project-count` para refletir a quantidade destacada.
 
 ---
 
@@ -117,8 +110,8 @@ Verifique em **Settings → Pages** se a fonte está configurada como `Deploy fr
 - **Fundo escuro com seções claras**: cria contraste visual entre blocos e guia o olhar
 - **Azul e vermelho como destaques**: consistentes em todo o site (gradientes, tags, botões)
 - **Tipografia sem serifa**: legibilidade em telas de todos os tamanhos
-- **Mockups SVG inline**: ilustrações dos projetos sem dependência de imagens externas
-- **Carrossel com toque**: navegação natural em dispositivos móveis
+- **Mockups em HTML/CSS/SVG inline**: ilustrações dos projetos sem dependência de imagens externas
+- **Showcase de projetos**: cards maiores com contexto, stack e link direto para repositório
 - **Sem scroll-snap por cenas**: removido em favor de scroll contínuo para melhor UX mobile
 - **Formulário sem servidor**: prepara mensagem para WhatsApp ou e-mail — transparente para o usuário
 
